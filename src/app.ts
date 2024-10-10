@@ -95,7 +95,8 @@ fastify.post("/interactions", async (request, response) => {
 
   console.log("message data", message);
 
-  if (message.data?.type === InteractionType.PING) {
+  // @ts-ignore
+  if (message.data?.type === InteractionType.PING || message.type) {
     const responseBody = {
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
       data: {
