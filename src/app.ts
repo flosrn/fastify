@@ -110,13 +110,18 @@ fastify.post("/interactions", async (request, response) => {
   }
 });
 
-fastify.listen({ port: 3000 }, async (error, address) => {
-  if (error) {
-    fastify.log.error(error);
-    process.exit(1);
+const PORT = process.env.PORT || 3000;
+
+fastify.listen(
+  { port: Number(PORT), host: "0.0.0.0" },
+  async (error, address) => {
+    if (error) {
+      fastify.log.error(error);
+      process.exit(1);
+    }
+    fastify.log.info(`server listening on ${address}`);
   }
-  fastify.log.info(`server listening on ${address}`);
-});
+);
 
 // Initialisation du client Discord
 const client = new Client({
