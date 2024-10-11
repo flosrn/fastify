@@ -47,11 +47,6 @@ fastify.addHook("preHandler", async (request, response) => {
 
     let bodyToVerify: string | Buffer | undefined = request.rawBody;
 
-    console.log("timestamp", timestamp);
-    console.log("signature", signature);
-    console.log("bodyToVerify", bodyToVerify);
-    console.log("request.body", request.body);
-
     // Si `rawBody` n'est pas disponible, on sérialise `request.body` pour obtenir le "raw" équivalent
     if (!bodyToVerify) {
       if (request.body && typeof request.body === "object") {
@@ -61,6 +56,11 @@ fastify.addHook("preHandler", async (request, response) => {
         return response.status(400).send({ error: "Invalid request body." });
       }
     }
+
+    console.log("timestamp", timestamp);
+    console.log("signature", signature);
+    console.log("bodyToVerify", bodyToVerify);
+    console.log("request.body", request.body);
 
     const isValidRequest = await verifyKey(
       bodyToVerify,
