@@ -37,6 +37,10 @@ fastify.register(rawBody, {
 });
 
 fastify.addHook("preHandler", async (request, response) => {
+  // if (request.headers["content-type"] !== "application/json") {
+  //   fastify.log.error("Unsupported Content-Type");
+  //   return response.status(400).send({ error: "Unsupported Content-Type" });
+  // }
   if (request.method === "POST") {
     const timestamp =
       request.headers["x-signature-timestamp"] ||
@@ -101,18 +105,26 @@ fastify.post("/interactions", async (request, response) => {
   console.log("message data", message);
 
   // @ts-ignore
-  if (message.data?.type === InteractionType.PING || message.type) {
+  if (message?.type === InteractionType.APPLICATION_COMMAND) {
     const responseBody = {
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
       data: {
         content: "Pong!",
       },
     };
-    console.log("Response Body:", responseBody);
-    await response.send(responseBody);
+    console.log("Response Body 2:", responseBody);
+    response.status(200).send(responseBody);
+    // @ts-ignore
+  } else if (message?.type === InteractionType.PING) {
+    const responseBody = {
+      type: InteractionResponseType.PONG,
+    };
+    console.log("Response Body 1:", responseBody);
+    response.status(200).send(responseBody);
+    // @ts-ignore
   } else {
     fastify.log.error("Unknown interaction type");
-    response.status(400).send({ error: "Unknown Type" });
+    response.status(400).send({ error: "bad request" });
   }
 });
 
