@@ -37,10 +37,6 @@ fastify.register(rawBody, {
 });
 
 fastify.addHook("preHandler", async (request, response) => {
-  // if (request.headers["content-type"] !== "application/json") {
-  //   fastify.log.error("Unsupported Content-Type");
-  //   return response.status(400).send({ error: "Unsupported Content-Type" });
-  // }
   if (request.method === "POST") {
     const timestamp =
       request.headers["x-signature-timestamp"] ||
@@ -61,10 +57,10 @@ fastify.addHook("preHandler", async (request, response) => {
       }
     }
 
-    console.log("timestamp", timestamp);
-    console.log("signature", signature);
-    console.log("bodyToVerify", bodyToVerify);
-    console.log("request.body", request.body);
+    // console.log("timestamp", timestamp);
+    // console.log("signature", signature);
+    // console.log("bodyToVerify", bodyToVerify);
+    // console.log("request.body", request.body);
 
     const isValidRequest = await verifyKey(
       bodyToVerify,
@@ -95,16 +91,8 @@ fastify.register(AutoLoad, {
 });
 
 fastify.post("/interactions", async (request, response) => {
-  const message = request.body as {
-    data: {
-      type?: unknown;
-      name?: unknown;
-    };
-  };
+  const message = request.body as { type?: unknown };
 
-  console.log("message data", message);
-
-  // @ts-ignore
   if (message?.type === InteractionType.APPLICATION_COMMAND) {
     const responseBody = {
       type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -112,19 +100,12 @@ fastify.post("/interactions", async (request, response) => {
         content: "Pong!",
       },
     };
-    console.log("Response Body 2:", responseBody);
-    response.status(200).send(responseBody);
-    // @ts-ignore
+    await response.status(200).send(responseBody);
   } else if (message?.type === InteractionType.PING) {
-    const responseBody = {
-      type: InteractionResponseType.PONG,
-    };
-    console.log("Response Body 1:", responseBody);
-    response.status(200).send(responseBody);
-    // @ts-ignore
+    await response.status(200).send({ type: InteractionResponseType.PONG });
   } else {
     fastify.log.error("Unknown interaction type");
-    response.status(400).send({ error: "bad request" });
+    await response.status(400).send({ error: "bad request" });
   }
 });
 
@@ -173,8 +154,6 @@ for (const folder of commandFolders) {
     }
   }
 }
-
-// console.log("client.commands", client.commands);
 
 const main = async () => {
   try {
