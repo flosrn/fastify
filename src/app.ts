@@ -2,6 +2,9 @@ import Fastify from "fastify";
 import rawBody from "fastify-raw-body";
 
 import AutoLoad, { type AutoloadPluginOptions } from "@fastify/autoload";
+import fs from "node:fs";
+import path, { join } from "node:path";
+// import type { APIInteraction } from "discord-api-types/v10";
 import {
   InteractionResponseType,
   InteractionType,
@@ -9,8 +12,6 @@ import {
 } from "discord-interactions";
 import { Client, Collection, Events, GatewayIntentBits } from "discord.js";
 import dotenv from "dotenv";
-import fs from "node:fs";
-import path, { join } from "node:path";
 import type { Command } from "./lib/commands";
 // import { register } from "./lib/commands";
 
@@ -90,25 +91,6 @@ fastify.register(AutoLoad, {
   options: pluginOptions,
 });
 
-fastify.post("/interactions", async (request, response) => {
-  const message = request.body as { type?: unknown };
-
-  if (message?.type === InteractionType.APPLICATION_COMMAND) {
-    const responseBody = {
-      type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-      data: {
-        content: "Pong!",
-      },
-    };
-    await response.status(200).send(responseBody);
-  } else if (message?.type === InteractionType.PING) {
-    await response.status(200).send({ type: InteractionResponseType.PONG });
-  } else {
-    fastify.log.error("Unknown interaction type");
-    await response.status(400).send({ error: "bad request" });
-  }
-});
-
 const PORT = process.env.PORT || 3000;
 
 fastify.listen(
@@ -170,34 +152,49 @@ client.once(Events.ClientReady, (readyClient) => {
   console.log(`Ready! Logged in as ${readyClient.user.tag}`);
 });
 
-// client.on(Events.InteractionCreate, async (interaction) => {
-//   console.log("interaction", interaction);
-//   if (!interaction.isChatInputCommand()) return;
+// fastify.post("/interactions", async (request, response) => {
+//   const message = request.body as APIInteraction;
+
+//   console.log("message", message);
 
 //   // @ts-ignore
-//   const command = interaction.client.commands.get(interaction.commandName);
-
-//   if (!command) {
-//     console.error(`No command matching ${interaction.commandName} was found.`);
-//     return;
-//   }
-
-//   try {
-//     await command.execute(interaction);
-//   } catch (error) {
-//     console.error(error);
-//     if (interaction.replied || interaction.deferred) {
-//       await interaction.followUp({
-//         content: "There was an error while executing this command!",
-//         ephemeral: true,
+//   if (message?.data.type === InteractionType.PING) {
+//     await response
+//       .status(200)
+//       .send({
+//         type: InteractionResponseType.PONG,
+//         data: { content: "poooong" },
 //       });
-//     } else {
-//       await interaction.reply({
-//         content: "There was an error while executing this command!",
-//         ephemeral: true,
-//       });
-//     }
+//   } else {
+//     fastify.log.error("Unknown interaction type");
+//     await response.status(400).send({ error: "bad request" });
 //   }
 // });
+
+fastify.post("/interactions", async (request, response) => {
+  const message = request.body as { type?: unknown };
+  console.log("message", message);
+
+  if (message?.type === InteractionType.APPLICATION_COMMAND) {
+    // @ts-ignore
+    let responseBody: unknown;
+    // @ts-ignore
+    if (message?.data?.name === "ping") {
+      responseBody = {
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: "Pooooooooooong!",
+        },
+      };
+    }
+
+    await response.status(200).send(responseBody);
+  } else if (message?.type === InteractionType.PING) {
+    await response.status(200).send({ type: InteractionResponseType.PONG });
+  } else {
+    fastify.log.error("Unknown interaction type");
+    await response.status(400).send({ error: "bad request" });
+  }
+});
 
 main();

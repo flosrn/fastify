@@ -49,6 +49,8 @@ const rest = new REST().setToken(process.env.CLIENT_TOKEN);
       { body: commands }
     );
 
+    console.log("data", data);
+
     console.log(
       `Successfully reloaded ${data.length} application (/) commands.`
     );
