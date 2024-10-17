@@ -6,6 +6,28 @@ import type { Command } from "./lib/commands";
 
 dotenv.config();
 
+const ALLOWED_ROLES = [
+  "Feca",
+  "Osamodas",
+  "Enutrof",
+  "Sram",
+  "Xélor",
+  "Ecaflip",
+  "Eniripsa",
+  "Iop",
+  "Cra",
+  "Sadida",
+  "Sacrieur",
+  "Pandawa",
+  "Roublard",
+  "Zobal",
+  "Steamer",
+  "Eliotrope",
+  "Huppermage",
+  "Ouginak",
+  "Forgelance",
+];
+
 interface ExtendedClient extends Client {
   commands: Collection<string, Command>;
 }
@@ -51,12 +73,32 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
   const addedRoles = newRoles.filter((role) => !oldRoles.has(role.id));
   const removedRoles = oldRoles.filter((role) => !newRoles.has(role.id));
 
+  const allowedAddedRoles = addedRoles.filter((role) =>
+    ALLOWED_ROLES.includes(role.name)
+  );
+
+  // Logs pour inspecter les valeurs
+  console.log(
+    "addedRoles",
+    addedRoles.map((role) => role.name)
+  ); // Rôles ajoutés
+  console.log(
+    "removedRoles",
+    removedRoles.map((role) => role.name)
+  ); // Rôles supprimés
+  console.log(
+    "allowedAddedRoles",
+    allowedAddedRoles.map((role) => role.name)
+  ); // Rôles autorisés ajoutés
+  console.log("allowedAddedRoles.size", allowedAddedRoles.size); // Taille des rôles autorisés ajoutés
+
   // console.log("oldRoles", oldRoles);
   // console.log("newRoles", newRoles);
   // console.log("addedRoles", addedRoles);
   // console.log("removedRoles", removedRoles);
+  // console.log("allowedAddedRoles", allowedAddedRoles.size);
 
-  if (addedRoles.size > 0 || removedRoles.size > 0) {
+  if (allowedAddedRoles.size > 0) {
     const webhookUrl = process.env.WEBHOOK_URL;
 
     // Exemple de payload avec les informations sur le rôle et le membre
