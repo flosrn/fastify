@@ -6,7 +6,7 @@ import type { Command } from "./lib/commands";
 
 dotenv.config();
 
-const ALLOWED_ROLES = [
+const CLASS = [
   "Feca",
   "Osamodas",
   "Enutrof",
@@ -26,6 +26,25 @@ const ALLOWED_ROLES = [
   "Huppermage",
   "Ouginak",
   "Forgelance",
+];
+
+const JOBS_FARM = [
+  "Alchimiste",
+  "Bûcheron",
+  "Pêcheur",
+  "Mineur",
+  "Chasseur",
+  "Paysan",
+];
+
+const JOBS_CRAFT = [
+  "Tailleur",
+  "Cordonnier",
+  "Forgeron",
+  "Sculpteur",
+  "Bijoutier",
+  "Bricoleur",
+  "Façonneur",
 ];
 
 interface ExtendedClient extends Client {
@@ -73,24 +92,27 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
   const addedRoles = newRoles.filter((role) => !oldRoles.has(role.id));
   const removedRoles = oldRoles.filter((role) => !newRoles.has(role.id));
 
-  const allowedAddedRoles = addedRoles.filter((role) =>
-    ALLOWED_ROLES.includes(role.name)
-  );
+  const allowedAddedRoles = addedRoles.filter((role) => {
+    return (
+      CLASS.includes(role.name) ||
+      JOBS_FARM.includes(role.name) ||
+      JOBS_CRAFT.includes(role.name)
+    );
+  });
 
-  // Logs pour inspecter les valeurs
-  console.log(
-    "addedRoles",
-    addedRoles.map((role) => role.name)
-  ); // Rôles ajoutés
-  console.log(
-    "removedRoles",
-    removedRoles.map((role) => role.name)
-  ); // Rôles supprimés
-  console.log(
-    "allowedAddedRoles",
-    allowedAddedRoles.map((role) => role.name)
-  ); // Rôles autorisés ajoutés
-  console.log("allowedAddedRoles.size", allowedAddedRoles.size); // Taille des rôles autorisés ajoutés
+  const roleType = addedRoles.map((role) => {
+    let roleType: string;
+    if (CLASS.includes(role.name)) {
+      roleType = "class";
+    } else if (JOBS_FARM.includes(role.name)) {
+      roleType = "jobs";
+    } else if (JOBS_CRAFT.includes(role.name)) {
+      roleType = "jobs";
+    } else {
+      roleType = "other";
+    }
+    return roleType;
+  });
 
   // console.log("oldRoles", oldRoles);
   // console.log("newRoles", newRoles);
@@ -106,7 +128,8 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
       user: newMember.user.username,
       addedRoles: addedRoles.map((role) => role.name),
       removedRoles: removedRoles.map((role) => role.name),
-      role: addedRoles.map((role) => role.name),
+      // @ts-ignore
+      [roleType]: roleType,
     };
 
     // Envoyer la requête HTTP POST à n8n
