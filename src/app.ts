@@ -130,6 +130,7 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
       removedRoles: removedRoles.map((role) => role.name),
       // @ts-ignore
       [roleType]: roleType,
+      roleType,
     };
 
     // Envoyer la requête HTTP POST à n8n
