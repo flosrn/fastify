@@ -30,7 +30,7 @@ const CLASS = [
 
 const JOBS_FARM = [
   "Alchimiste",
-  "Bûcheron",
+  "Bucheron",
   "Pêcheur",
   "Mineur",
   "Chasseur",
@@ -103,11 +103,11 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
   const roleType = addedRoles.map((role) => {
     let roleType: string;
     if (CLASS.includes(role.name)) {
-      roleType = "class";
+      roleType = "CLASSE";
     } else if (JOBS_FARM.includes(role.name)) {
-      roleType = "jobs";
+      roleType = "METIERS";
     } else if (JOBS_CRAFT.includes(role.name)) {
-      roleType = "jobs";
+      roleType = "METIERS";
     } else {
       roleType = "other";
     }
@@ -128,8 +128,6 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
       user: newMember.user.username,
       addedRoles: addedRoles.map((role) => role.name),
       removedRoles: removedRoles.map((role) => role.name),
-      // @ts-ignore
-      [roleType]: roleType,
       roleType,
     };
 
