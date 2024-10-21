@@ -92,13 +92,15 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
     // console.log("newMember", newMember);
 
     const payload = {
-      id: newMember.user.id,
-      user: newMember.user.globalName,
       addedRoles: allowedAddedRoles.map((role) => ({
+        id: newMember.user.id,
+        user: newMember.user.globalName,
         role: role.name,
         roleType: getRoleType(role.name),
       })),
       removedRoles: allowedRomovedRoles.map((role) => ({
+        id: newMember.user.id,
+        user: newMember.user.globalName,
         role: role.name,
         roleType: getRoleType(role.name),
       })),
