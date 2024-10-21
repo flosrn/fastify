@@ -45,6 +45,22 @@ const main = async () => {
 
 main();
 
+const getRoleType = (role: string) => {
+  let roleType: string;
+  if (CLASS.includes(role)) {
+    roleType = "CLASSE";
+  } else if (JOBS_FARM.includes(role)) {
+    roleType = "METIERS";
+  } else if (JOBS_CRAFT.includes(role)) {
+    roleType = "METIERS";
+  } else if (DISPO.includes(role)) {
+    roleType = "HORAIRES";
+  } else {
+    roleType = "other";
+  }
+  return roleType;
+};
+
 client.on("guildMemberUpdate", async (oldMember, newMember) => {
   const oldRoles = oldMember.roles.cache;
   const newRoles = newMember.roles.cache;
@@ -70,22 +86,6 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
     );
   });
 
-  const roleType = addedRoles.map((role) => {
-    let roleType: string;
-    if (CLASS.includes(role.name)) {
-      roleType = "CLASSE";
-    } else if (JOBS_FARM.includes(role.name)) {
-      roleType = "METIERS";
-    } else if (JOBS_CRAFT.includes(role.name)) {
-      roleType = "METIERS";
-    } else if (DISPO.includes(role.name)) {
-      roleType = "HORAIRES";
-    } else {
-      roleType = "other";
-    }
-    return roleType;
-  });
-
   if (allowedAddedRoles.size > 0 || allowedRomovedRoles.size > 0) {
     const webhookUrl = process.env.WEBHOOK_URL;
     // console.log("webhookUrl", webhookUrl);
@@ -94,9 +94,12 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
     const payload = {
       id: newMember.user.id,
       user: newMember.user.globalName,
-      addedRoles: addedRoles.map((role) => role.name),
+      addedRoles: addedRoles.map((role) => {
+        role: role.name;
+        roleType: getRoleType(role.name);
+      }),
       removedRoles: removedRoles.map((role) => role.name),
-      roleType: roleType[0],
+      // roleType: roleType[0],
     };
 
     // Envoie la requête HTTP POST à n8n
