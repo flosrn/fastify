@@ -2,50 +2,10 @@ import { verifyKey } from "discord-interactions";
 import { Client, Collection, Events, GatewayIntentBits } from "discord.js";
 import dotenv from "dotenv";
 import Fastify from "fastify";
+import { CLASS, JOBS_CRAFT, JOBS_FARM } from "./data/roles";
 import type { Command } from "./lib/commands";
 
 dotenv.config();
-
-const CLASS = [
-  "Feca",
-  "Osamodas",
-  "Enutrof",
-  "Sram",
-  "Xélor",
-  "Ecaflip",
-  "Eniripsa",
-  "Iop",
-  "Cra",
-  "Sadida",
-  "Sacrieur",
-  "Pandawa",
-  "Roublard",
-  "Zobal",
-  "Steamer",
-  "Eliotrope",
-  "Huppermage",
-  "Ouginak",
-  "Forgelance",
-];
-
-const JOBS_FARM = [
-  "Alchimiste",
-  "Bucheron",
-  "Pêcheur",
-  "Mineur",
-  "Chasseur",
-  "Paysan",
-];
-
-const JOBS_CRAFT = [
-  "Tailleur",
-  "Cordonnier",
-  "Forgeron",
-  "Sculpteur",
-  "Bijoutier",
-  "Bricoleur",
-  "Façonneur",
-];
 
 interface ExtendedClient extends Client {
   commands: Collection<string, Command>;
@@ -122,16 +82,19 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
 
   if (allowedAddedRoles.size > 0) {
     const webhookUrl = process.env.WEBHOOK_URL;
+    console.log("webhookUrl", webhookUrl);
 
-    // Exemple de payload avec les informations sur le rôle et le membre
+    // console.log("newMember", newMember);
+
     const payload = {
-      user: newMember.user.username,
+      id: newMember.user.id,
+      user: newMember.user.globalName,
       addedRoles: addedRoles.map((role) => role.name),
       removedRoles: removedRoles.map((role) => role.name),
       roleType,
     };
 
-    // Envoyer la requête HTTP POST à n8n
+    // Envoie la requête HTTP POST à n8n
     try {
       // @ts-ignore
       await fetch(webhookUrl, {
