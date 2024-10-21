@@ -56,7 +56,8 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
     return (
       CLASS.includes(role.name) ||
       JOBS_FARM.includes(role.name) ||
-      JOBS_CRAFT.includes(role.name)
+      JOBS_CRAFT.includes(role.name) ||
+      DISPO.includes(role.name)
     );
   });
 
