@@ -61,6 +61,15 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
     );
   });
 
+  const allowedRomovedRoles = removedRoles.filter((role) => {
+    return (
+      CLASS.includes(role.name) ||
+      JOBS_FARM.includes(role.name) ||
+      JOBS_CRAFT.includes(role.name) ||
+      DISPO.includes(role.name)
+    );
+  });
+
   const roleType = addedRoles.map((role) => {
     let roleType: string;
     if (CLASS.includes(role.name)) {
@@ -77,16 +86,9 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
     return roleType;
   });
 
-  // console.log("oldRoles", oldRoles);
-  // console.log("newRoles", newRoles);
-  // console.log("addedRoles", addedRoles);
-  // console.log("removedRoles", removedRoles);
-  // console.log("allowedAddedRoles", allowedAddedRoles.size);
-
-  if (allowedAddedRoles.size > 0) {
+  if (allowedAddedRoles.size > 0 || allowedRomovedRoles.size > 0) {
     const webhookUrl = process.env.WEBHOOK_URL;
-    console.log("webhookUrl", webhookUrl);
-
+    // console.log("webhookUrl", webhookUrl);
     // console.log("newMember", newMember);
 
     const payload = {
@@ -94,7 +96,7 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
       user: newMember.user.globalName,
       addedRoles: addedRoles.map((role) => role.name),
       removedRoles: removedRoles.map((role) => role.name),
-      roleType,
+      roleType: roleType[0],
     };
 
     // Envoie la requête HTTP POST à n8n
@@ -129,11 +131,6 @@ const verifyDiscordRequest = async (req, res, next) => {
     timestamp,
     process.env.PUBLIC_KEY
   );
-
-  // console.log("rawBody", rawBody);
-  // console.log("signature", signature);
-  // console.log("timestamp", timestamp);
-  // console.log("isValidRequest", isValidRequest);
 
   if (!isValidRequest) {
     return res.status(401).send("Bad request signature.");
