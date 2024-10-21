@@ -86,7 +86,7 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
     const webhookUrl = process.env.WEBHOOK_URL;
     console.log("webhookUrl", webhookUrl);
 
-    console.log("newMember", newMember);
+    // console.log("newMember", newMember);
 
     const payload = {
       id: newMember.user.id,
