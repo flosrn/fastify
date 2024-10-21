@@ -2,7 +2,7 @@ import { verifyKey } from "discord-interactions";
 import { Client, Collection, Events, GatewayIntentBits } from "discord.js";
 import dotenv from "dotenv";
 import Fastify from "fastify";
-import { CLASS, JOBS_CRAFT, JOBS_FARM } from "./data/roles";
+import { CLASS, DISPO, JOBS_CRAFT, JOBS_FARM } from "./data/roles";
 import type { Command } from "./lib/commands";
 
 dotenv.config();
@@ -68,6 +68,8 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
       roleType = "METIERS";
     } else if (JOBS_CRAFT.includes(role.name)) {
       roleType = "METIERS";
+    } else if (DISPO.includes(role.name)) {
+      roleType = "HORAIRES";
     } else {
       roleType = "other";
     }

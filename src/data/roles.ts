@@ -39,4 +39,11 @@ const JOBS_CRAFT = [
   "Façonneur",
 ];
 
-export { CLASS, JOBS_CRAFT, JOBS_FARM };
+const DISPO = [
+  "No-life légendaire",
+  "Chômeur",
+  "Gamer soir et weekend",
+  "Casu",
+];
+
+export { CLASS, DISPO, JOBS_CRAFT, JOBS_FARM };
