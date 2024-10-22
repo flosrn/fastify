@@ -43,4 +43,6 @@ const DISPO = ["No-life", "Gamer soir et weekend", "Touriste"];
 
 const TEAM_FULL = ["En recherche de team", "Prêt à bz"];
 
-export { CLASS, DISPO, JOBS_CRAFT, JOBS_FARM, TEAM_FULL };
+const ARCHÉTYPE = ["Joueur PvM", "Joueur Métier"];
+
+export { ARCHÉTYPE, CLASS, DISPO, JOBS_CRAFT, JOBS_FARM, TEAM_FULL };

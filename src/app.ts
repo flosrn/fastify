@@ -3,7 +3,14 @@ import { Client, Collection, Events, GatewayIntentBits } from "discord.js";
 import dotenv from "dotenv";
 import Fastify from "fastify";
 import { join } from "path";
-import { CLASS, DISPO, JOBS_CRAFT, JOBS_FARM, TEAM_FULL } from "./data/roles";
+import {
+  ARCHÉTYPE,
+  CLASS,
+  DISPO,
+  JOBS_CRAFT,
+  JOBS_FARM,
+  TEAM_FULL,
+} from "./data/roles";
 import { Command } from "./lib/commands";
 
 dotenv.config();
@@ -54,6 +61,8 @@ const getRoleType = (role: string) => {
     roleType = "HORAIRES";
   } else if (TEAM_FULL.includes(role)) {
     roleType = "TEAM FULL";
+  } else if (ARCHÉTYPE.includes(role)) {
+    roleType = "ARCHÉTYPE";
   } else {
     roleType = "other";
   }
@@ -76,7 +85,8 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
       JOBS_FARM.includes(role.name) ||
       JOBS_CRAFT.includes(role.name) ||
       DISPO.includes(role.name) ||
-      TEAM_FULL.includes(role.name)
+      TEAM_FULL.includes(role.name) ||
+      ARCHÉTYPE.includes(role.name)
     );
   });
 
@@ -86,7 +96,8 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
       JOBS_FARM.includes(role.name) ||
       JOBS_CRAFT.includes(role.name) ||
       DISPO.includes(role.name) ||
-      TEAM_FULL.includes(role.name)
+      TEAM_FULL.includes(role.name) ||
+      ARCHÉTYPE.includes(role.name)
     );
   });
 
