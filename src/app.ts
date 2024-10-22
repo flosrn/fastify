@@ -108,7 +108,7 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
     const payload = {
       addedRoles: allowedAddedRoles.map((role) => ({
         id: newMember.user.id,
-        user: newMember.user.globalName,
+        user: newMember.user.globalName || newMember.user.username,
         role: role.name,
         roleType: getRoleType(role.name),
       })),
