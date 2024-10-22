@@ -31,7 +31,8 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
       CLASS.includes(role.name) ||
       JOBS_FARM.includes(role.name) ||
       JOBS_CRAFT.includes(role.name) ||
-      DISPO.includes(role.name)
+      DISPO.includes(role.name) ||
+      TEAM_FULL.includes(role.name)
     );
   });
 
@@ -40,7 +41,8 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
       CLASS.includes(role.name) ||
       JOBS_FARM.includes(role.name) ||
       JOBS_CRAFT.includes(role.name) ||
-      DISPO.includes(role.name)
+      DISPO.includes(role.name) ||
+      TEAM_FULL.includes(role.name)
     );
   });
 
