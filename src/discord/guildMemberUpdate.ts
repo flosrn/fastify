@@ -1,5 +1,5 @@
 import { client } from "../client";
-import { CLASS, DISPO, JOBS_CRAFT, JOBS_FARM } from "../data/roles";
+import { CLASS, DISPO, JOBS_CRAFT, JOBS_FARM, TEAM_FULL } from "../data/roles";
 
 const getRoleType = (role: string) => {
   let roleType: string;
@@ -11,6 +11,8 @@ const getRoleType = (role: string) => {
     roleType = "METIERS";
   } else if (DISPO.includes(role)) {
     roleType = "HORAIRES";
+  } else if (TEAM_FULL.includes(role)) {
+    roleType = "TEAM FULL";
   } else {
     roleType = "other";
   }

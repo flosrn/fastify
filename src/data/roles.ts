@@ -41,4 +41,6 @@ const JOBS_CRAFT = [
 
 const DISPO = ["No-life", "Chômeur", "Gamer soir et weekend", "Casu"];
 
-export { CLASS, DISPO, JOBS_CRAFT, JOBS_FARM };
+const TEAM_FULL = ["Prêt à bz"];
+
+export { CLASS, DISPO, JOBS_CRAFT, JOBS_FARM, TEAM_FULL };
