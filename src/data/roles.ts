@@ -39,7 +39,7 @@ const JOBS_CRAFT = [
   "Façonneur",
 ];
 
-const DISPO = ["No-life", "Chômeur", "Gamer soir et weekend", "Casu"];
+const DISPO = ["No-life", "Gamer soir et weekend", "Touriste"];
 
 const TEAM_FULL = ["En recherche de team", "Prêt à bz"];
 
