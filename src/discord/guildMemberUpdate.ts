@@ -26,6 +26,9 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
   const addedRoles = newRoles.filter((role) => !oldRoles.has(role.id));
   const removedRoles = oldRoles.filter((role) => !newRoles.has(role.id));
 
+  console.log("addedRoles", addedRoles);
+  console.log("removedRoles", removedRoles);
+
   const allowedAddedRoles = addedRoles.filter((role) => {
     return (
       CLASS.includes(role.name) ||
@@ -49,7 +52,6 @@ client.on("guildMemberUpdate", async (oldMember, newMember) => {
   if (allowedAddedRoles.size > 0 || allowedRomovedRoles.size > 0) {
     const webhookUrl = process.env.WEBHOOK_URL as string | URL;
     // console.log("webhookUrl", webhookUrl);
-    // console.log("newMember", newMember);
 
     const payload = {
       addedRoles: allowedAddedRoles.map((role) => ({
