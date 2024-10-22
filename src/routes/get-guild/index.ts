@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import type { FastifyInstance, FastifyPluginAsync } from "fastify";
-import { client } from "../../client";
+import { client } from "../../app";
 
 dotenv.config();
 
