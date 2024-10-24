@@ -27,6 +27,7 @@ const JOBS_FARM = [
   "Mineur",
   "Chasseur",
   "Paysan",
+  "Éleveur",
 ];
 
 const JOBS_CRAFT = [
