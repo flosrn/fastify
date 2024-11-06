@@ -1,7 +1,7 @@
 import { PresenceUpdateStatus } from "discord.js";
 import dotenv from "dotenv";
 import type { FastifyInstance, FastifyPluginAsync } from "fastify";
-import { client } from "../../app";
+import client from "../../client";
 
 dotenv.config();
 
@@ -15,12 +15,16 @@ const example: FastifyPluginAsync = async (fastify: FastifyInstance) => {
 
     try {
       const fetchedMembers = await guild.members.fetch({ withPresences: true });
+      console.log("fetchedMembers", fetchedMembers);
 
       const totalOnline = fetchedMembers.filter(
         (member) => member.presence?.status === PresenceUpdateStatus.Online
       );
 
-      return reply.send({ onlineMembers: totalOnline.size });
+      return reply.send({
+        onlineMembers: totalOnline.size,
+        totalMembers: fetchedMembers.size,
+      });
     } catch (error) {
       fastify.log.error("Erreur lors de la récupération des membres :", error);
       return reply

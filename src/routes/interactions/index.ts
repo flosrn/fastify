@@ -1,5 +1,5 @@
 import type { FastifyInstance, FastifyPluginAsync } from "fastify";
-import { verifyDiscordRequest } from "../../utils/verify-discord-request";
+import { verifyDiscordRequest } from "../../utils/verifyDiscordRequest";
 
 const example: FastifyPluginAsync = async (fastify: FastifyInstance) => {
   fastify.post(
