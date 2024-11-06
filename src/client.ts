@@ -1,4 +1,5 @@
 import { Client, Events, GatewayIntentBits, Partials, User } from "discord.js";
+import dotenv from "dotenv";
 import {
   handleReactionAdd,
   handleReactionRemove,
@@ -6,7 +7,6 @@ import {
 import { ThreadMapEntry } from "./types";
 import { getAllowedRoles, getRoleType } from "./utils/roles";
 import { sendWebhook } from "./utils/webhook";
-import dotenv from "dotenv";
 
 dotenv.config();
 
@@ -22,17 +22,6 @@ const client = new Client({
     GatewayIntentBits.MessageContent,
   ],
   partials: [Partials.Message, Partials.Channel, Partials.Reaction],
-});
-
-const threadMap = new Map<string, ThreadMapEntry>();
-
-client.login(process.env.CLIENT_TOKEN).catch((error) => {
-  console.error("Erreur lors de la connexion du bot Discord :", error);
-  process.exit(1);
-});
-
-client.once(Events.ClientReady, (readyClient) => {
-  console.log(`Bot connecté en tant que ${readyClient.user.tag}`);
 });
 
 /**
@@ -68,6 +57,8 @@ client.on(Events.GuildMemberUpdate, async (oldMember, newMember) => {
   }
 });
 
+const threadMap = new Map<string, ThreadMapEntry>();
+
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
   if (reaction.message.channelId !== CHANNEL_ID) return;
   if (reaction.emoji.name !== "✅") return;
@@ -82,6 +73,15 @@ client.on(Events.MessageReactionRemove, async (reaction, user) => {
   if (user.bot) return;
 
   await handleReactionRemove(reaction, user as User, threadMap);
+});
+
+client.login(process.env.CLIENT_TOKEN).catch((error) => {
+  console.error("Erreur lors de la connexion du bot Discord :", error);
+  process.exit(1);
+});
+
+client.once(Events.ClientReady, (readyClient) => {
+  console.log(`Bot connecté en tant que ${readyClient.user.tag}`);
 });
 
 export default client;
