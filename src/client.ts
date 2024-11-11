@@ -61,7 +61,7 @@ const threadMap = new Map<string, ThreadMapEntry>();
 
 client.on(Events.MessageReactionAdd, async (reaction, user) => {
   if (reaction.message.channelId !== CHANNEL_ID) return;
-  if (reaction.emoji.name !== "✅") return;
+  if (reaction.emoji.name !== "👍") return;
   if (user.bot) return;
 
   await handleReactionAdd(reaction, user as User, threadMap);
@@ -69,7 +69,7 @@ client.on(Events.MessageReactionAdd, async (reaction, user) => {
 
 client.on(Events.MessageReactionRemove, async (reaction, user) => {
   if (reaction.message.channelId !== CHANNEL_ID) return;
-  if (reaction.emoji.name !== "✅") return;
+  if (reaction.emoji.name !== "👍") return;
   if (user.bot) return;
 
   await handleReactionRemove(reaction, user as User, threadMap);

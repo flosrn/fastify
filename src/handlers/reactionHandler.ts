@@ -35,11 +35,12 @@ export async function handleReactionAdd(
     const parsedMessage = parseMessageContent(message.content);
     const thread = await message.channel.threads.create({
       name:
-        `🏰 ${parsedMessage.Donjon} ${
-          parsedMessage["Succès"] !== "Aucun"
-            ? `$[${parsedMessage["Succès"]}] : ""`
-            : ""
-        } [${parsedMessage["Nombre de joueurs"]} joueurs]` || "Discussion",
+        `🏰 ${parsedMessage.Donjon.replace(
+          /\*\*/g,
+          ""
+        ).trim()} [${parsedMessage["Nombre de joueurs"]
+          .replace(/\*\*/g, "")
+          .trim()} joueurs]` || "Discussion",
       autoArchiveDuration: ThreadAutoArchiveDuration.OneWeek,
       type: ChannelType.PrivateThread,
     });
